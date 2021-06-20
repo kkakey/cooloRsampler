@@ -1,0 +1,25 @@
+Package: cooloRsampler
+Type: Package
+Title: Returns a Randomly Generated Color Palette From Coolors (https://coolors.co/)
+Version: 0.1.0
+Author: Kristen Akey
+Maintainer: The package maintainer <kkakey999@gmail.com>
+Description: This package features the `coolor_sampler()` function, which 
+    grabs a randomly generated color palette of 2 to 9 colors from Coolors (https://coolors.co/). 
+    Users specify the number of colors they would like in their palette, and the 
+    functions returns the HEX codes of the randomly generated palette.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: 
+    rvest,
+    RSelenium,
+    magrittr,
+    scales,
+    ggplot2
