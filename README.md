@@ -9,10 +9,58 @@ You can install the current verion of cooloRsampler from
 ``` r
 # install.packages("devtools")
 devtools::install_github("kkakey/cooloRsampler")
+library(cooloRsampler)
 ```
 The current version of cooloRsampler requires Firefox. **Please install Firefox from [here](https://www.mozilla.org/en-US/firefox/new/)**, if you do not have the application already. 
 
+*************************************************
+
+### coolor_sampler()
+
+This function grabs a randomly generated color palette of 2 to 9 colors from https://coolors.co/.
+
+**ncolor** - number of desired colors in palette (2-9)
+
+```r
+# Generates a color palette of 8 from https://coolors.co/
+my_colors <- coolor_sampler(ncolor=8)
+[1] "Grabbing some colors - this might take a few seconds!"
+
+my_colors
+[1] "#08415C" "#213E58" "#393B53" "#6A3549" "#CC2936" "#EBBAB9"
+[7] "#388697" "#B5FFE1"
+```
+*************************************************
+
 ### Example
 
-Coming very soon!
+```r
+library(cooloRsampler)
+
+my_colors <- coolor_sampler(ncolor=5)
+[1] "Grabbing some colors - this might take a few seconds!"
+```
+
+```r
+# Easily add the palette to your next ggplot!
+background_col <- my_colors[1]
+points_col <- my_colors[2:length(my_colors)]
+```
+
+```r
+library(ggplot2)
+data("mtcars")
+
+ggplot(mtcars, aes(mpg, wt)) +
+   geom_point(aes(colour = factor(cyl), size = factor(cyl))) +
+   scale_colour_manual(values = rev(points_col)) +
+   theme(plot.background = element_rect(background_col),
+         panel.background = element_rect(background_col),
+         legend.background = element_rect(background_col),
+         panel.grid.major = element_line("grey40"),
+         panel.grid.minor = element_line("grey40"))
+```
+<img src="man/figures/README-plot_example.png" width="50%" />
+
+Not satisfied with the palette choosen, run **coolor_sampler()** again! This funcation is an easy way to directly try out new palettes.
 
