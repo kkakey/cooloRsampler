@@ -4,37 +4,31 @@
 \alias{coolor_sampler}
 \title{Generate a color palette from https://coolors.co/}
 \usage{
-coolor_sampler(ncolor = 5)
+coolor_sampler(ncolor = 5, type = "discrete")
 }
 \arguments{
-\item{ncolor}{Input number of colors in palette (2-9)}
+\item{ncolor}{Number of colors to have in palette.}
+
+\item{type}{Type of palette: continuous or discrete. Default is discrete.}
 }
 \value{
 Hex color codes of palette.
 }
 \description{
 This function grabs a randomly generated color palette
-of 2 to 9 colors from https://coolors.co/.
+from https://coolors.co/ and returns a continuous or discrete 
+palette of the desired length to the user.
 }
 \examples{
 ## Generate a palette of 6 colors from https://coolors.co/
 my_colors <- coolor_sampler(ncolor=6)
-
 ## View sampled colors
 scales::show_col(my_colors, ncol = 1)
 
 ## Easily add the palette to your next ggplot!
-background_col <- my_colors[1]
-points_col <- my_colors[2:length(my_colors)]
-
-data("mtcars")
 library(ggplot2)
 ggplot(mtcars, aes(mpg, wt)) +
   geom_point(aes(colour = factor(cyl))) +
-  scale_colour_manual(values = rev(points_col)) +
-  theme(plot.background = element_rect(background_col),
-        panel.background = element_rect(background_col),
-        legend.background = element_rect(background_col),
-        text = element_text(color="white"))
+  scale_colour_manual(values = coolor_sampler(ncolor=5)) 
 }
 \keyword{coolors}
