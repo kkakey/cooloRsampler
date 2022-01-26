@@ -1,7 +1,7 @@
 #' Generate a color palette from https://coolors.co/
 #'
 #' This function grabs a randomly generated color palette
-#' from https://coolors.co/ and returns a continuous or discrete 
+#' from https://coolors.co/ and returns a continuous or discrete
 #' palette of the desired length to the user.
 #' @param ncolor Number of colors to have in palette.
 #' @param type Type of palette: continuous or discrete. Default is discrete.
@@ -13,6 +13,7 @@
 #' @import magrittr
 #' @import scales
 #' @import ggplot2
+#' @import grDevices
 #' @examples
 #' ## Generate a palette of 6 colors from https://coolors.co/
 #' my_colors <- coolor_sampler(ncolor=6)
@@ -23,7 +24,7 @@
 #' library(ggplot2)
 #' ggplot(mtcars, aes(mpg, wt)) +
 #'   geom_point(aes(colour = factor(cyl))) +
-#'   scale_colour_manual(values = coolor_sampler(ncolor=5)) 
+#'   scale_colour_manual(values = coolor_sampler(ncolor=5))
 
 coolor_sampler <- function(ncolor=5, type = "discrete") {
 
@@ -41,10 +42,10 @@ coolor_sampler <- function(ncolor=5, type = "discrete") {
   tryCatch({
     webElem <- remDr$findElement(using = 'css selector',"#whats-new > div:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)")
     webElem$clickElement()
-    
+
     webElem <- remDr$findElement(using = 'css selector',"#generator-tutorial-intro_begin-btn")
     webElem$clickElement()
-    
+
     webElem <- remDr$findElement(using = 'css selector',"#generator-tutorial_steps > a:nth-child(2)")
     webElem$clickElement()
   }, error = function(e){
@@ -69,7 +70,7 @@ coolor_sampler <- function(ncolor=5, type = "discrete") {
     }
     html <- remDr$getPageSource()[[1]]
     # grabs HEX color codes
-    hex <- rvest::read_html(html) %>% 
+    hex <- rvest::read_html(html) %>%
       rvest::html_nodes("div.generator_color_hex") %>%
       rvest::html_text()
   }
@@ -88,13 +89,14 @@ coolor_sampler <- function(ncolor=5, type = "discrete") {
     }
     html <- remDr$getPageSource()[[1]]
     # grabs HEX color codes
-    hex <- rvest::read_html(html) %>% 
+    hex <- rvest::read_html(html) %>%
       rvest::html_nodes("div.generator_color_hex") %>%
       rvest::html_text()
   }
   else if (type == "discrete" && (ncolor<2 | ncolor > 9)) {
     rD$server$stop()
-    stop('Oops! Please enter a number between 3 and 9 for a discrete color palette.')
+    stop(paste0('Oops! Please enter a number between 3 and 9 for a discrete color palette.',
+        'Otherwise specify `type = "continuous"` for a continuous palette'))
   }
 
   # add '#' to beginning of each code
@@ -102,7 +104,7 @@ coolor_sampler <- function(ncolor=5, type = "discrete") {
   for (i in hex) {
     hex_full <- c(hex_full, paste0("#",i))
   }
-  
+
   if (type == "continuous") {
     hex_full <- grDevices::colorRampPalette(hex_full)(ncolor)
   }
